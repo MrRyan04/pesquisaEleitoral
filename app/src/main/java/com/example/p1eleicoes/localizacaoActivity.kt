@@ -5,10 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -18,23 +15,14 @@ import com.google.android.gms.location.*
 
 class localizacaoActivity : AppCompatActivity() {
 
-    private lateinit var pegarlocalizacao: Button
-    private lateinit var sairlocalizacao: Button
-    private lateinit var txtLatitude: TextView
-    private lateinit var txtLongitude: TextView
-
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    private var locationCallback: LocationCallback? = null
+    private lateinit var eleitorLocalizacao: FusedLocationProviderClient
+    private var callback: LocationCallback? = null
 
     private val pedirPermissao = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { foiConcedida ->
-        if (foiConcedida) {
-            iniciarCapturaLocalizacao()
+    ) { concedida ->
+        if (concedida) {
+            iniciarLocalizacao()
         } else {
             Toast.makeText(
                 this,
@@ -46,134 +34,72 @@ class localizacaoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
         setContentView(R.layout.activity_localizacao)
 
-        pegarlocalizacao = findViewById(R.id.pegarlocalizacao)
-        sairlocalizacao = findViewById(R.id.sairlocalizacao)
-        txtLatitude = findViewById(R.id.txtLatitude)
-        txtLongitude = findViewById(R.id.txtLongitude)
-
-        fusedLocationClient =
+        eleitorLocalizacao =
             LocationServices.getFusedLocationProviderClient(this)
 
-        pegarlocalizacao.setOnClickListener {
-            verificarEPedirPermissao()
-        }
+        findViewById<android.widget.Button>(R.id.pegarlocalizacao)
+            .setOnClickListener {
 
-        sairlocalizacao.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    iniciarLocalizacao()
+                } else {
+                    pedirPermissao.launch(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                }
+            }
 
-            val telalogin = Intent(
-                this, voltarActivity::class.java
-            )
-
-            startActivity(telalogin)
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById(R.id.main)
-        ) { v, insets ->
-
-            val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.sair)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(
                 systemBars.left,
                 systemBars.top,
                 systemBars.right,
                 systemBars.bottom
             )
-
             insets
         }
     }
 
-    private fun verificarEPedirPermissao() {
-
-        if (
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-
-            iniciarCapturaLocalizacao()
-
-        } else {
-
-            pedirPermissao.launch(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        }
-    }
-
-    private fun iniciarCapturaLocalizacao() {
-
-        val configuracao = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY,
-            3000
+    private fun iniciarLocalizacao() {
+        val requisicao = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY, 3000
         ).build()
 
-        locationCallback = object : LocationCallback() {
+        val novoCallback = object : LocationCallback() {
+            override fun onLocationResult(resultado: LocationResult) {
+                val localizacao = resultado.lastLocation
 
-            override fun onLocationResult(
-                resultado: LocationResult
-            ) {
-
-                val ultimaLocalizacao =
-                    resultado.lastLocation
-
-                if (ultimaLocalizacao != null) {
-
-                    latitude = ultimaLocalizacao.latitude
-                    longitude = ultimaLocalizacao.longitude
-
-                    GlobalData.latitudes.add(
-                        latitude.toString()
-                    )
-
-                    GlobalData.longitudes.add(
-                        longitude.toString()
-                    )
-
-                    locationCallback?.let { callback ->
-                        fusedLocationClient.removeLocationUpdates(
-                            callback
-                        )
-                    }
-
-                    val telafinalizar = Intent(
-                        this@localizacaoActivity,
-                        finalizarActivity::class.java
-                    )
-
-                    startActivity(telafinalizar)
+                if (localizacao == null) {
+                    return
                 }
+
+                GlobalData.latitudes.add(localizacao.latitude.toString())
+                GlobalData.longitudes.add(localizacao.longitude.toString())
+
+                eleitorLocalizacao.removeLocationUpdates(this)
+                callback = null
+
+                val telafinalizar = Intent(
+                    this@localizacaoActivity,
+                    finalizarActivity::class.java
+                )
+                startActivity(telafinalizar)
             }
         }
 
-        try {
+        callback = novoCallback
 
-            fusedLocationClient.requestLocationUpdates(
-                configuracao,
-                locationCallback!!,
-                Looper.getMainLooper()
-            )
-
-        } catch (e: SecurityException) {
-
-            e.printStackTrace()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        locationCallback?.let { callback ->
-            fusedLocationClient.removeLocationUpdates(
-                callback
-            )
-        }
+        eleitorLocalizacao.requestLocationUpdates(
+            requisicao,
+            novoCallback,
+            Looper.getMainLooper()
+        )
     }
 }
