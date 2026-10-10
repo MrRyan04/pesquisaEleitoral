@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sair"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F5ED"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    tools:context=".eleitresdadosActivity">
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Nome:"
+        android:textColor="#2F6B4F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nomeone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="#1E3028"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textView15"
+        app:layout_constraintTop_toTopOf="@id/textView15" />
+
+    <TextView
+        android:id="@+id/llll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Telefone:"
+        android:textColor="#2F6B4F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView15" />
+
+    <TextView
+        android:id="@+id/telefoneone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="#1E3028"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/llll"
+        app:layout_constraintTop_toTopOf="@id/llll" />
+
+    <TextView
+        android:id="@+id/latitudedados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Latitude:"
+        android:textColor="#2F6B4F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llll" />
+
+    <TextView
+        android:id="@+id/latitudeempty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="#1E3028"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/latitudedados"
+        app:layout_constraintTop_toTopOf="@id/latitudedados" />
+
+    <TextView
+        android:id="@+id/latitudedados2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Longitude:"
+        android:textColor="#2F6B4F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/latitudedados" />
+
+    <TextView
+        android:id="@+id/longitudeempty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="#1E3028"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/latitudedados2"
+        app:layout_constraintTop_toTopOf="@id/latitudedados2" />
+
+    <Button
+        android:id="@+id/proximo"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="#84CF82"
+        android:text="PRÓXIMO ELEITOR"
+        android:textColor="#1E3028"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/latitudedados2" />
+
+    <Button
+        android:id="@+id/saireleit"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#2F6B4F"
+        android:text="SAIR"
+        android:textColor="#F7F5ED"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/proximo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

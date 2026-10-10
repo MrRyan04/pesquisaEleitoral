@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">p1eleicoes</string>
+    <string name="user">USUARIO</string>
+    <string name="password">SENHA</string>
+    <string name="login">ENTRAR</string>
+    <string name="start">COMECAR</string>
+    <string name="pe">PESQUISA ESPONTANÊA</string>
+    <string name="opnion">Se você pudesse votar em qualquer pessoa (seja real ou ficticia), em quem você votaria?</string>
+</resources>
