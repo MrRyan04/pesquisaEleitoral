@@ -1,3 +1,4 @@
+
 package com.example.p1eleicoes
 
 import android.content.Context
@@ -8,7 +9,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 
-class BarChartView @JvmOverloads constructor(
+class BarChartView(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -16,21 +17,20 @@ class BarChartView @JvmOverloads constructor(
 
     private var dataMap: Map<String, Float> = emptyMap()
 
-    private val barPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val barPaint = Paint().apply {
         color = Color.parseColor("#3F51B5")
-        style = Paint.Style.FILL
     }
 
-    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val textPaint = Paint().apply {
         color = Color.BLACK
         textSize = 36f
         textAlign = Paint.Align.CENTER
     }
 
-    private val rect = RectF()
+    private val retangulo = RectF()
 
     fun setData(data: Map<String, Float>) {
-        this.dataMap = data
+        dataMap = data
         invalidate()
     }
 
@@ -39,40 +39,45 @@ class BarChartView @JvmOverloads constructor(
 
         if (dataMap.isEmpty()) return
 
-        val maxValue = dataMap.values.maxOrNull() ?: 1f
-        val count = dataMap.size
-        val barWidth = width / (count * 2f)
-        val maxBarHeight = height * 0.7f
+        val maiorValor = dataMap.values.maxOrNull() ?: 1f
+        val larguraBarra = width / (dataMap.size * 2f)
+        val alturaMaxima = height * 0.7f
 
-        var index = 0
-        for ((label, value) in dataMap) {
-            val left = (index * 2 + 0.5f) * barWidth
-            val right = left + barWidth
+        var indice = 0
 
-            val barHeight =
-                if (maxValue > 0) (value / maxValue) * maxBarHeight else 0f
+        for ((nome, valor) in dataMap) {
 
-            val top = (height - 80f) - barHeight
-            val bottom = height - 80f
+            val esquerda = (indice * 2 + 0.5f) * larguraBarra
+            val direita = esquerda + larguraBarra
 
-            rect.set(left, top, right, bottom)
-            canvas.drawRoundRect(rect, 12f, 12f, barPaint)
+            val alturaBarra = if (maiorValor > 0) {
+                valor / maiorValor * alturaMaxima
+            } else {
+                0f
+            }
+
+            val topo = height - 80f - alturaBarra
+            val base = height - 80f
+
+            retangulo.set(esquerda, topo, direita, base)
+
+            canvas.drawRoundRect(retangulo, 12f, 12f, barPaint)
 
             canvas.drawText(
-                value.toInt().toString(),
-                left + barWidth / 2,
-                top - 15f,
+                valor.toInt().toString(),
+                (esquerda + direita) / 2,
+                topo - 15f,
                 textPaint
             )
 
             canvas.drawText(
-                label,
-                left + barWidth / 2,
+                nome,
+                (esquerda + direita) / 2,
                 height - 20f,
                 textPaint
             )
 
-            index++
+            indice++
         }
     }
 }
