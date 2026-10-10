@@ -63,41 +63,9 @@ class localizacaoActivity : AppCompatActivity() {
         }
 
         sairlocalizacao.setOnClickListener {
-            if (GlobalData.pablovotos > 0) {
-                GlobalData.pablovotos--
-            }
-
-            if (GlobalData.tayronevotos > 0) {
-                GlobalData.tayronevotos--
-            }
-
-            if (GlobalData.austinvotos > 0) {
-                GlobalData.austinvotos--
-            }
-
-            if (GlobalData.uniquavotos > 0) {
-                GlobalData.uniquavotos--
-            }
-
-            if (GlobalData.tashavotos > 0) {
-                GlobalData.tashavotos--
-            }
-
-            if (GlobalData.nulovotos > 0) {
-                GlobalData.nulovotos--
-            }
-
-            if (GlobalData.naoseivotos > 0) {
-                GlobalData.naoseivotos--
-            }
-
-            if (GlobalData.brancovotos > 0) {
-                GlobalData.brancovotos--
-            }
 
             val telalogin = Intent(
-                this,
-                voltarActivity::class.java
+                this, voltarActivity::class.java
             )
 
             startActivity(telalogin)
